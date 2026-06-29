@@ -20,8 +20,3 @@ The game helps a young child build a birthday card one step at a time with:
 2. Tap word choices or type in the writing box.
 3. Finish the card, send it, then build the birthday party.
 
-## GitHub Upload
-
-This project is ready to upload as a small static web game.
-
-If you want to publish it with GitHub Pages later, this single HTML file can also be renamed or copied to `index.html`.
