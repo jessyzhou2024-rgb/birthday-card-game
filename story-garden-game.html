@@ -1,0 +1,1455 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mommy Birthday Card</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --white: #ffffff;
+      --pink: #ff5aa8;
+      --hot-pink: #e9348d;
+      --aqua: #2dd4bf;
+      --blue: #3478f6;
+      --yellow: #ffd43b;
+      --purple: #7c4dff;
+      --green: #35b56d;
+      --orange: #ff8a3d;
+      --panel: rgba(255, 255, 255, .9);
+      --shadow: rgba(23, 32, 51, .22);
+      font-family: "Trebuchet MS", "Avenir Next", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, .16) 1px, transparent 1px),
+        linear-gradient(180deg, #8ee8ff 0 38%, #f6d1ff 38% 62%, #8be783 62% 100%);
+      background-size: 42px 42px, 100% 100%;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 10px;
+      padding: clamp(14px, 3vw, 28px);
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5.6vw, 4.6rem);
+      line-height: .98;
+      color: var(--white);
+      text-shadow: 0 5px 0 var(--hot-pink), 0 9px 20px var(--shadow);
+    }
+
+    .mom-scene {
+      width: min(36vw, 430px);
+      min-width: 310px;
+      min-height: 126px;
+      position: relative;
+      border: 3px solid rgba(255, 255, 255, .82);
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 18% 24%, rgba(255, 212, 59, .65) 0 10px, transparent 11px),
+        radial-gradient(circle at 82% 28%, rgba(255, 90, 168, .45) 0 12px, transparent 13px),
+        linear-gradient(180deg, rgba(255, 255, 255, .78), rgba(255, 230, 245, .86));
+      box-shadow: 0 7px 0 rgba(23, 32, 51, .12);
+      overflow: hidden;
+    }
+
+    .mom-scene::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 12px;
+      height: 22px;
+      border-radius: 999px;
+      background: rgba(45, 212, 191, .18);
+    }
+
+    .doll {
+      position: absolute;
+      bottom: 16px;
+      width: 82px;
+      height: 100px;
+    }
+
+    .doll.mom {
+      left: 78px;
+      transform: scale(1.06);
+    }
+
+    .doll.child {
+      left: 190px;
+      bottom: 12px;
+      transform: scale(.78);
+    }
+
+    .doll .hair {
+      position: absolute;
+      left: 17px;
+      top: 0;
+      width: 48px;
+      height: 42px;
+      border-radius: 20px 20px 12px 12px;
+      background: #ffd84f;
+      border: 4px solid #d7a923;
+      z-index: 1;
+    }
+
+    .doll .head {
+      position: absolute;
+      left: 22px;
+      top: 14px;
+      width: 38px;
+      height: 36px;
+      border-radius: 12px;
+      background: #ffd2ac;
+      border: 3px solid #c98662;
+      z-index: 2;
+    }
+
+    .doll .head::before,
+    .doll .head::after {
+      content: "";
+      position: absolute;
+      top: 14px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--ink);
+    }
+
+    .doll .head::before { left: 9px; }
+    .doll .head::after { right: 9px; }
+
+    .doll .dress {
+      position: absolute;
+      left: 16px;
+      top: 50px;
+      width: 50px;
+      height: 46px;
+      border-radius: 8px 8px 14px 14px;
+      background: linear-gradient(180deg, #ff8cc9, #e9348d);
+      border: 4px solid #b82975;
+      z-index: 1;
+    }
+
+    .doll.child .dress {
+      background: linear-gradient(180deg, #b785ff, #7c4dff);
+      border-color: #5932ba;
+    }
+
+    .doll .arm {
+      position: absolute;
+      top: 58px;
+      width: 30px;
+      height: 9px;
+      border-radius: 999px;
+      background: #ffd2ac;
+      border: 2px solid #c98662;
+      z-index: 3;
+    }
+
+    .doll .arm.left {
+      left: -2px;
+      transform: rotate(-25deg);
+    }
+
+    .doll .arm.right {
+      right: -2px;
+      transform: rotate(25deg);
+    }
+
+    .heart-link {
+      position: absolute;
+      left: 166px;
+      top: 52px;
+      color: var(--hot-pink);
+      font-size: 2.1rem;
+      font-weight: 900;
+      text-shadow: 0 3px 0 rgba(23, 32, 51, .12);
+      z-index: 4;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(280px, 390px) minmax(360px, 1fr);
+      gap: clamp(14px, 3vw, 28px);
+      align-items: stretch;
+    }
+
+    .control-stack {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .panel {
+      border: 3px solid rgba(255, 255, 255, .82);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: 0 8px 0 rgba(23, 32, 51, .16), 0 18px 34px rgba(23, 32, 51, .16);
+    }
+
+    .challenge-panel {
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .challenge-title {
+      margin: 0;
+      color: var(--hot-pink);
+      font-size: 1.5rem;
+      line-height: 1.12;
+    }
+
+    .challenge-copy {
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1.32;
+      font-weight: 800;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .choice-btn {
+      min-height: 76px;
+      border: 3px solid rgba(23, 32, 51, .2);
+      border-radius: 8px;
+      background: linear-gradient(180deg, #ffffff 0%, #ffe6f5 100%);
+      color: var(--ink);
+      font-size: clamp(1.65rem, 5vw, 2.45rem);
+      font-weight: 900;
+      box-shadow: 0 6px 0 rgba(233, 52, 141, .25);
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+
+    .choice-btn:disabled, .action-btn:disabled {
+      cursor: default;
+      opacity: .58;
+      filter: grayscale(.25);
+      transform: none;
+    }
+
+    .choice-btn:active, .action-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 3px 0 rgba(23, 32, 51, .16);
+    }
+
+    .write-panel {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    label {
+      color: var(--purple);
+      font-size: 1.3rem;
+      font-weight: 900;
+    }
+
+    .writing-line {
+      width: 100%;
+      min-height: 60px;
+      padding: 0 10px;
+      border: 3px solid rgba(23, 32, 51, .18);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--ink);
+      font-size: 1.8rem;
+      font-weight: 800;
+      outline: 0;
+      box-shadow: inset 0 -5px 0 rgba(45, 212, 191, .18);
+    }
+
+    .writing-line:focus {
+      border-color: var(--aqua);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 54px 54px;
+      gap: 9px;
+    }
+
+    .action-btn {
+      min-height: 52px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--white);
+      font-weight: 900;
+      background: var(--purple);
+      box-shadow: 0 6px 0 rgba(23, 32, 51, .18);
+    }
+
+    .action-btn {
+      background: linear-gradient(180deg, var(--pink), var(--hot-pink));
+    }
+
+    .icon-btn {
+      min-height: 52px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--white);
+      background: var(--blue);
+      font-size: 1.35rem;
+      font-weight: 900;
+      box-shadow: 0 6px 0 rgba(23, 32, 51, .18);
+    }
+
+    .stage {
+      position: relative;
+      min-height: 650px;
+      overflow: hidden;
+      border: 4px solid rgba(255, 255, 255, .88);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .42) 0 28%, transparent 28%),
+        linear-gradient(180deg, #82e4ff 0 42%, #ffc1e7 42% 61%, #77dc74 61% 100%);
+      box-shadow: 0 10px 0 rgba(23, 32, 51, .16);
+    }
+
+    .world-title {
+      position: absolute;
+      top: 18px;
+      left: 5%;
+      right: 5%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: start;
+      z-index: 5;
+    }
+
+    .story-card {
+      min-height: 118px;
+      padding: 18px;
+      border: 3px solid rgba(23, 32, 51, .12);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(255, 244, 250, .92));
+      box-shadow: 0 8px 0 rgba(23, 32, 51, .12);
+    }
+
+    .story-card p {
+      margin: 0;
+      font-size: clamp(1.25rem, 2.5vw, 2rem);
+      line-height: 1.28;
+      font-weight: 900;
+    }
+
+    .card-preview {
+      display: grid;
+      gap: 10px;
+      min-height: 172px;
+    }
+
+    .card-front {
+      position: relative;
+      min-height: 240px;
+      padding: 54px 22px 26px;
+      border-radius: 8px;
+      border: 4px solid rgba(255, 164, 201, .72);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(255, 246, 251, .98)),
+        repeating-linear-gradient(180deg, transparent 0 27px, rgba(255, 173, 205, .18) 27px 29px);
+      box-shadow:
+        inset 0 0 0 3px rgba(255, 255, 255, .92),
+        inset 0 -18px 30px rgba(255, 214, 233, .32),
+        0 10px 0 rgba(23, 32, 51, .1);
+      display: grid;
+      gap: 12px;
+      align-content: start;
+      transform-origin: center;
+      overflow: hidden;
+    }
+
+    .card-front::before {
+      content: "Birthday Card";
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      top: 16px;
+      text-align: center;
+      font-size: .95rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      color: var(--hot-pink);
+      text-transform: uppercase;
+    }
+
+    .card-front::after {
+      content: "♡  ★  ✿";
+      position: absolute;
+      right: 16px;
+      bottom: 10px;
+      color: rgba(233, 52, 141, .52);
+      font-size: 1.05rem;
+      font-weight: 900;
+      word-spacing: 6px;
+    }
+
+    .card-front.sent {
+      animation: sendCard 1.25s ease-in forwards;
+    }
+
+    .card-line {
+      min-height: 34px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid rgba(255, 176, 208, .42);
+      color: var(--ink);
+      font-size: clamp(1.05rem, 2.2vw, 1.42rem);
+      line-height: 1.24;
+      font-weight: 900;
+    }
+
+    .card-line:first-child {
+      margin-top: 4px;
+    }
+
+    .card-line:last-child {
+      margin-top: 10px;
+      width: 72%;
+    }
+
+    .card-line.empty {
+      color: rgba(23, 32, 51, .32);
+    }
+
+    .send-card-btn {
+      min-height: 48px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--white);
+      background: linear-gradient(180deg, var(--aqua), var(--blue));
+      font-weight: 900;
+      box-shadow: 0 6px 0 rgba(23, 32, 51, .18);
+      transition: opacity .18s ease, transform .18s ease, box-shadow .18s ease;
+    }
+
+    .send-card-btn[hidden] {
+      display: none;
+    }
+
+    .send-card-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 3px 0 rgba(23, 32, 51, .16);
+    }
+
+    .sent-banner {
+      min-height: 42px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(255, 212, 59, .82);
+      color: var(--hot-pink);
+      font-weight: 900;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-shadow: 0 5px 0 rgba(23, 32, 51, .12);
+    }
+
+    .sent-banner.show {
+      display: flex;
+      animation: bannerPop .45s ease both;
+    }
+
+    .party-room {
+      display: none;
+      min-height: 174px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 3px solid rgba(23, 32, 51, .16);
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, .45) 1px, transparent 1px),
+        linear-gradient(180deg, #fff0fa 0 55%, #bdf3ff 55% 100%);
+      background-size: 24px 24px, 100% 100%;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 -8px 0 rgba(23, 32, 51, .08);
+    }
+
+    .party-room.show {
+      display: block;
+      animation: bannerPop .45s ease both;
+    }
+
+    .fireworks-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .25s ease;
+    }
+
+    .fireworks-layer.show {
+      opacity: 1;
+    }
+
+    .firework {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--c);
+      box-shadow:
+        0 0 0 0 var(--c),
+        0 0 0 14px rgba(255, 255, 255, .0);
+      animation: fireworkPop .85s ease-out forwards;
+    }
+
+    .firework::before,
+    .firework::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 74px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--c);
+      transform: translate(-50%, -50%) rotate(var(--r));
+      transform-origin: center;
+      opacity: .95;
+    }
+
+    .firework::after {
+      width: 4px;
+      height: 74px;
+    }
+
+    .firework.spark {
+      width: 10px;
+      height: 10px;
+      box-shadow:
+        0 0 0 0 var(--c),
+        0 0 0 0 rgba(255, 255, 255, .0);
+    }
+
+    .party-item {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      border: 3px solid rgba(23, 32, 51, .16);
+      background: rgba(255, 255, 255, .9);
+      color: var(--hot-pink);
+      font-weight: 900;
+      opacity: .22;
+      filter: grayscale(.75);
+      transform: scale(.88);
+      transition: opacity .25s ease, filter .25s ease, transform .25s ease;
+      box-shadow: 0 6px 0 rgba(23, 32, 51, .12);
+    }
+
+    .party-item.unlocked {
+      opacity: 1;
+      filter: none;
+      transform: scale(1);
+      animation: partyPop .42s ease both;
+    }
+
+    .party-item.banner { left: 18px; right: 18px; top: 10px; min-height: 34px; color: var(--purple); }
+    .party-item.balloon { left: 22px; top: 64px; width: 62px; height: 76px; border-radius: 50% 50% 44% 44%; background: #ff8cc9; color: var(--white); }
+    .party-item.cake { left: 38%; bottom: 12px; width: 92px; height: 62px; background: #fff4b8; }
+    .party-item.gift { right: 24px; bottom: 18px; width: 78px; height: 66px; background: #a7f3ff; color: var(--purple); }
+    .party-item.star { right: 30px; top: 62px; width: 54px; height: 54px; background: var(--yellow); }
+
+    .bonus-start-btn {
+      min-height: 48px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--white);
+      background: linear-gradient(180deg, var(--purple), var(--hot-pink));
+      font-weight: 900;
+      box-shadow: 0 6px 0 rgba(23, 32, 51, .18);
+    }
+
+    .bonus-start-btn[hidden] {
+      display: none;
+    }
+
+    .obby {
+      position: absolute;
+      left: 5%;
+      right: 5%;
+      bottom: 28px;
+      height: 335px;
+      z-index: 1;
+    }
+
+    .avatar {
+      position: absolute;
+      left: 2%;
+      bottom: 58px;
+      width: 86px;
+      height: 124px;
+      transition: left .4s ease, bottom .4s ease, transform .18s ease;
+      z-index: 3;
+    }
+
+    .head {
+      position: absolute;
+      left: 18px;
+      top: 0;
+      width: 50px;
+      height: 46px;
+      border-radius: 8px;
+      background: #ffd4a8;
+      border: 4px solid #c9875f;
+    }
+
+    .hair {
+      position: absolute;
+      left: 10px;
+      top: -6px;
+      width: 58px;
+      height: 35px;
+      border-radius: 8px 8px 16px 16px;
+      background: #ffdc4d;
+      border: 4px solid #d49d1f;
+    }
+
+    .eye {
+      position: absolute;
+      top: 21px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--ink);
+    }
+
+    .eye.left { left: 32px; }
+    .eye.right { left: 50px; }
+
+    .body {
+      position: absolute;
+      left: 16px;
+      top: 48px;
+      width: 54px;
+      height: 54px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #ff76bd, #d73691);
+      border: 4px solid #aa246f;
+    }
+
+    .leg {
+      position: absolute;
+      top: 96px;
+      width: 20px;
+      height: 26px;
+      border-radius: 6px;
+      background: #3c5bdc;
+      border: 3px solid #253c9f;
+    }
+
+    .leg.left { left: 20px; }
+    .leg.right { left: 47px; }
+
+    .speech {
+      position: absolute;
+      left: 5%;
+      bottom: 385px;
+      max-width: 390px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 3px solid rgba(23, 32, 51, .16);
+      background: rgba(255, 255, 255, .9);
+      color: var(--hot-pink);
+      font-weight: 900;
+      box-shadow: 0 7px 0 rgba(23, 32, 51, .12);
+      z-index: 4;
+    }
+
+    @keyframes sendCard {
+      0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        opacity: 1;
+      }
+      45% {
+        transform: translate(62px, -38px) rotate(7deg) scale(.9);
+        opacity: .95;
+      }
+      100% {
+        transform: translate(430px, -220px) rotate(18deg) scale(.28);
+        opacity: 0;
+      }
+    }
+
+    @keyframes bannerPop {
+      from { transform: scale(.86); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes partyPop {
+      0% { transform: translateY(8px) scale(.78); }
+      70% { transform: translateY(-4px) scale(1.06); }
+      100% { transform: translateY(0) scale(1); }
+    }
+
+    @keyframes fireworkPop {
+      0% {
+        transform: scale(.25);
+        opacity: 0;
+      }
+      20% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1.25);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      header {
+        grid-template-columns: 1fr;
+      }
+
+      .mom-scene {
+        width: 100%;
+        min-width: 0;
+      }
+
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      .stage {
+        min-height: 560px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .app {
+        padding: 12px;
+      }
+
+      .choice-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        grid-template-columns: 1fr 52px 52px;
+      }
+
+      .world-title {
+        grid-template-columns: 1fr;
+      }
+
+      .speech {
+        left: 5%;
+        right: 5%;
+        bottom: 345px;
+      }
+
+      .avatar {
+        width: 72px;
+        transform: scale(.82);
+        transform-origin: bottom left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Mommy Birthday Card</h1>
+      <div class="mom-scene" aria-label="Mom and child playing together">
+        <div class="doll mom" aria-hidden="true">
+          <div class="hair"></div>
+          <div class="head"></div>
+          <div class="dress"></div>
+          <div class="arm left"></div>
+          <div class="arm right"></div>
+        </div>
+        <div class="heart-link" aria-hidden="true">♡</div>
+        <div class="doll child" aria-hidden="true">
+          <div class="hair"></div>
+          <div class="head"></div>
+          <div class="dress"></div>
+          <div class="arm left"></div>
+          <div class="arm right"></div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="control-stack" aria-label="Game controls">
+        <span id="levelNumber" hidden>1</span>
+        <span id="starCount" hidden>0</span>
+        <span id="gemCount" hidden>0</span>
+
+        <section class="panel challenge-panel" aria-live="polite">
+          <h2 class="challenge-title" id="challengeTitle">Party Greeting Jump</h2>
+          <p class="challenge-copy" id="challengeCopy"></p>
+          <div class="choice-grid" id="choices"></div>
+        </section>
+
+        <section class="panel write-panel">
+          <label for="writingInput" id="writingLabel">Card words</label>
+          <input class="writing-line" id="writingInput" autocomplete="off" spellcheck="false">
+          <div class="actions">
+            <button class="action-btn" type="button" id="jumpBtn">Done</button>
+            <button class="icon-btn" type="button" id="speakBtn" aria-label="Mommy voice" title="Mommy voice">▶</button>
+            <button class="icon-btn" type="button" id="nextBtn" aria-label="Try another one" title="Try another one">↻</button>
+          </div>
+        </section>
+
+      </section>
+
+      <section class="stage" aria-label="Block challenge world">
+        <div class="world-title">
+          <div class="story-card">
+            <div class="card-preview" aria-label="Birthday card preview">
+              <p id="storyText">Let us make a sweet birthday card together.</p>
+              <div class="card-front" id="cardFront">
+                <div class="card-line empty" id="cardGreeting">Happy Birthday!</div>
+                <div class="card-line empty" id="cardName">Dear...</div>
+                <div class="card-line empty" id="cardCompliment">You are...</div>
+                <div class="card-line empty" id="cardWish">I hope...</div>
+                <div class="card-line empty" id="cardSign">Love...</div>
+              </div>
+              <button class="send-card-btn" type="button" id="sendCardBtn" hidden>Send Card</button>
+              <div class="sent-banner" id="sentBanner">There it goes. Happy birthday!</div>
+              <button class="bonus-start-btn" type="button" id="bonusStartBtn" hidden>Build Party</button>
+              <div class="party-room" id="partyRoom" aria-label="Birthday party room">
+                <div class="fireworks-layer" id="fireworksLayer" aria-hidden="true"></div>
+                <div class="party-item banner" id="partyBanner">HAPPY BIRTHDAY</div>
+                <div class="party-item balloon" id="partyBalloon">balloon</div>
+                <div class="party-item cake" id="partyCake">cake</div>
+                <div class="party-item gift" id="partyGift">gift</div>
+                <div class="party-item star" id="partyStar">star</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="speech" id="message">Hi sweetheart, choose some card words with me.</div>
+
+        <div class="obby" aria-hidden="true">
+          <div class="avatar" id="avatar">
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="eye left"></div>
+            <div class="eye right"></div>
+            <div class="body"></div>
+            <div class="leg left"></div>
+            <div class="leg right"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    function option(label, value) {
+      return { label, value };
+    }
+
+    const levels = [
+      {
+        title: "🎉 Say Happy",
+        map: "Hello",
+        prompt: "🎉 Sweetheart, which greeting should we put on the card?",
+        answer: "",
+        choices: [
+          option("🎉 Happy", "Happy"),
+          option("👋 Hello", "Hello"),
+          option("💌 Dear", "Dear")
+        ],
+        story: "🎉 Let us start with a happy birthday greeting.",
+        target: "greeting",
+        template: "🎉 Happy Birthday!",
+        prize: "★"
+      },
+      {
+        title: "👩 Pick A Name",
+        map: "Name",
+        prompt: "👩 Who should we write this sweet card to?",
+        answer: "",
+        choices: [
+          option("👩 Mom", "Mom"),
+          option("👨 Dad", "Dad"),
+          option("👧 Friend", "Friend")
+        ],
+        story: "📝 Now we write who will get your birthday card.",
+        target: "name",
+        template: "💌 Dear ___,",
+        prize: "♡"
+      },
+      {
+        title: "🎂 Make Cake",
+        map: "Word",
+        prompt: "🎂 Can you help Mommy build the word cake?",
+        answer: "cake",
+        choices: [
+          option("🟣 c", "c"),
+          option("🟡 a", "a"),
+          option("🧩 ke", "ke")
+        ],
+        story: "🎂 Cake is a birthday word. We can copy it together.",
+        target: "wish",
+        template: "🎂 I hope you get cake.",
+        prize: "C"
+      },
+      {
+        title: "💖 Kind Word",
+        map: "Kind",
+        prompt: "💖 Which kind word should we say?",
+        answer: "",
+        choices: [
+          option("💖 kind", "kind"),
+          option("😄 funny", "funny"),
+          option("🍬 sweet", "sweet")
+        ],
+        story: "💖 A kind word makes the card feel warm.",
+        target: "compliment",
+        template: "💖 You are ___.",
+        prize: "✿"
+      },
+      {
+        title: "🌈 Make A Wish",
+        map: "Wish",
+        prompt: "🌈 Let us finish this wish: I hope you...",
+        answer: "",
+        choices: [
+          option("😊 smile", "smile"),
+          option("🎈 play", "play"),
+          option("💃 dance", "dance")
+        ],
+        story: "🌈 Now we add one loving birthday wish.",
+        target: "wish",
+        template: "🌈 I hope you ___.",
+        prize: "◆"
+      },
+      {
+        title: "💌 Sign Card",
+        map: "Finish",
+        prompt: "💌 How should we sign the card, honey?",
+        answer: "",
+        choices: [
+          option("❤️ Love", "Love"),
+          option("📮 From me", "From me"),
+          option("🤗 Hugs", "Hugs")
+        ],
+        story: "💌 Let us finish with a sweet ending.",
+        target: "sign",
+        template: "❤️ ___,",
+        prize: "✓"
+      }
+    ];
+
+    const avatarStops = [
+      { left: "2%", bottom: "58px" },
+      { left: "16%", bottom: "58px" },
+      { left: "30%", bottom: "58px" },
+      { left: "44%", bottom: "58px" },
+      { left: "58%", bottom: "58px" },
+      { left: "72%", bottom: "58px" }
+    ];
+
+    const levelNumber = document.querySelector("#levelNumber");
+    const starCount = document.querySelector("#starCount");
+    const gemCount = document.querySelector("#gemCount");
+    const challengeTitle = document.querySelector("#challengeTitle");
+    const challengeCopy = document.querySelector("#challengeCopy");
+    const choices = document.querySelector("#choices");
+    const writingLabel = document.querySelector("#writingLabel");
+    const writingInput = document.querySelector("#writingInput");
+    const jumpBtn = document.querySelector("#jumpBtn");
+    const speakBtn = document.querySelector("#speakBtn");
+    const nextBtn = document.querySelector("#nextBtn");
+    const storyText = document.querySelector("#storyText");
+    const cardFront = document.querySelector("#cardFront");
+    const sendCardBtn = document.querySelector("#sendCardBtn");
+    const sentBanner = document.querySelector("#sentBanner");
+    const bonusStartBtn = document.querySelector("#bonusStartBtn");
+    const partyRoom = document.querySelector("#partyRoom");
+    const fireworksLayer = document.querySelector("#fireworksLayer");
+    const partyItems = {
+      banner: document.querySelector("#partyBanner"),
+      balloon: document.querySelector("#partyBalloon"),
+      cake: document.querySelector("#partyCake"),
+      gift: document.querySelector("#partyGift"),
+      star: document.querySelector("#partyStar")
+    };
+    const cardLines = {
+      greeting: document.querySelector("#cardGreeting"),
+      name: document.querySelector("#cardName"),
+      compliment: document.querySelector("#cardCompliment"),
+      wish: document.querySelector("#cardWish"),
+      sign: document.querySelector("#cardSign")
+    };
+    const message = document.querySelector("#message");
+    const avatar = document.querySelector("#avatar");
+
+    let levelIndex = 0;
+    let stars = 0;
+    let gems = 0;
+    let cardComplete = false;
+    let cardSent = false;
+    let bonusActive = false;
+    let bonusIndex = 0;
+    let bonusComplete = false;
+    let isMoving = false;
+    const cardState = {
+      greeting: "",
+      name: "",
+      compliment: "",
+      wish: "",
+      sign: ""
+    };
+
+    const bonusChallenges = [
+      {
+        title: "🎉 Party Word",
+        prompt: "🎉 Let us build the word party together.",
+        answer: "party",
+        choices: [
+          option("🟣 p", "p"),
+          option("🟡 ar", "ar"),
+          option("🧩 ty", "ty")
+        ],
+        story: "🎉 Write party and we will hang the birthday banner.",
+        item: "banner"
+      },
+      {
+        title: "🎈 Balloon Word",
+        prompt: "🎈 Can you build balloon with me?",
+        answer: "balloon",
+        choices: [
+          option("🟣 ba", "ba"),
+          option("🟡 ll", "ll"),
+          option("🧩 oon", "oon")
+        ],
+        story: "🎈 Write balloon and one will float into the room.",
+        item: "balloon"
+      },
+      {
+        title: "🎂 Cake Word",
+        prompt: "🎂 Let us write cake for the party table.",
+        answer: "cake",
+        choices: [
+          option("🟣 c", "c"),
+          option("🟡 a", "a"),
+          option("🧩 ke", "ke")
+        ],
+        story: "🎂 Write cake and we will put cake on the table.",
+        item: "cake"
+      },
+      {
+        title: "🎁 Gift Word",
+        prompt: "🎁 Can you help me write gift?",
+        answer: "gift",
+        choices: [
+          option("🟣 g", "g"),
+          option("🟡 if", "if"),
+          option("🧩 t", "t")
+        ],
+        story: "🎁 Write gift and we will add a present.",
+        item: "gift"
+      },
+      {
+        title: "⭐ Star Word",
+        prompt: "⭐ One more, sweetheart. Let us write star.",
+        answer: "star",
+        choices: [
+          option("🟣 s", "s"),
+          option("🟡 t", "t"),
+          option("🧩 ar", "ar")
+        ],
+        story: "⭐ Write star and the party room will sparkle.",
+        item: "star"
+      }
+    ];
+
+    function currentLevel() {
+      if (bonusActive) {
+        return bonusChallenges[bonusIndex];
+      }
+      return levels[levelIndex];
+    }
+
+    function render() {
+      isMoving = false;
+      jumpBtn.disabled = false;
+      const level = currentLevel();
+      const activeIndex = bonusActive ? bonusIndex : levelIndex;
+      const totalLevels = bonusActive ? bonusChallenges.length : levels.length;
+      levelNumber.textContent = String(activeIndex + 1);
+      starCount.textContent = String(stars);
+      gemCount.textContent = String(gems);
+      challengeTitle.textContent = level.title;
+      challengeCopy.textContent = level.prompt;
+      writingLabel.textContent = bonusActive ? "Party words" : "Card words";
+      writingInput.value = "";
+      writingInput.placeholder = level.answer ? "Try with me: " + level.answer : "Choose or type with me";
+      storyText.textContent = level.story;
+      message.textContent = bonusActive
+        ? bonusComplete
+          ? "Look, sweetheart. The party room is ready."
+          : "Let us build a party word, then decorate together."
+        : cardComplete
+        ? "Your card is ready, sweetheart. Let us send it."
+        : "Choose some card words with me, honey.";
+      moveAvatar();
+      renderCard();
+      renderSendState();
+      renderPartyState();
+      renderChoices();
+    }
+
+    function renderChoices() {
+      choices.innerHTML = "";
+      currentLevel().choices.forEach(choice => {
+        const button = document.createElement("button");
+        button.className = "choice-btn";
+        button.type = "button";
+        button.textContent = choice.label;
+        button.disabled = isMoving;
+        button.onclick = () => choose(choice.value);
+        choices.append(button);
+      });
+    }
+
+    function choose(choice) {
+      if (isMoving) return;
+      const level = currentLevel();
+      if (level.answer) {
+        writingInput.value = buildWordProgress(writingInput.value, choice, level.answer);
+        if (normalize(writingInput.value).includes(normalize(level.answer))) {
+          attemptJump();
+        } else {
+          message.textContent = "Good listening, sweetheart. Keep building the word.";
+          writingInput.focus();
+        }
+      } else {
+        writingInput.value = choice;
+        previewCardLine(level, choice);
+        attemptJump();
+      }
+    }
+
+    function attemptJump() {
+      if (isMoving) return;
+      const level = currentLevel();
+      const typed = normalize(writingInput.value);
+      const expected = normalize(level.answer);
+
+      if (!typed && expected) {
+        message.textContent = "Choose one little block first, honey.";
+        writingInput.focus();
+        return;
+      }
+
+      const openStory = expected === "";
+      const matched = openStory || typed === expected || typed.includes(expected);
+      const cardWords = writingInput.value.trim();
+      isMoving = true;
+      setPlayControlsDisabled(true);
+      stars += matched ? 2 : 1;
+      gems += 1;
+      if (bonusActive) {
+        unlockPartyItem(level.item);
+      } else {
+        applyCardLine(level, cardWords || level.answer);
+      }
+
+      renderCard();
+
+      message.textContent = bonusActive
+        ? matched
+          ? "You did it. The party is getting prettier."
+          : "That was a brave try. Let us listen and try again."
+        : matched
+        ? "You added sweet words to the card."
+        : "That was a brave try. Let us copy the word together.";
+
+      if (bonusActive && bonusIndex < bonusChallenges.length - 1) {
+        bonusIndex += 1;
+      } else if (bonusActive) {
+        bonusComplete = true;
+        message.textContent = "Oh sweetheart, the party room is ready.";
+        launchFireworks();
+      } else if (levelIndex < levels.length - 1) {
+        levelIndex += 1;
+      } else {
+        cardComplete = true;
+      }
+
+      renderScoreAndProgress();
+      moveAvatar();
+      window.setTimeout(render, 780);
+    }
+
+    function setPlayControlsDisabled(disabled) {
+      jumpBtn.disabled = disabled;
+      choices.querySelectorAll("button").forEach(button => {
+        button.disabled = disabled;
+      });
+    }
+
+    function renderScoreAndProgress() {
+      const activeIndex = bonusActive ? bonusIndex : levelIndex;
+      const totalLevels = bonusActive ? bonusChallenges.length : levels.length;
+      levelNumber.textContent = String(activeIndex + 1);
+      starCount.textContent = String(stars);
+      gemCount.textContent = String(gems);
+      renderCard();
+      renderSendState();
+      renderPartyState();
+    }
+
+    function previewCardLine(level, words) {
+      if (!level.target) return;
+      const text = formatCardText(level, words);
+      const line = cardLines[level.target];
+      if (line) {
+        line.textContent = text;
+        line.classList.remove("empty");
+      }
+    }
+
+    function applyCardLine(level, words) {
+      if (!level.target) return;
+      cardState[level.target] = formatCardText(level, words);
+    }
+
+    function formatCardText(level, words) {
+      const cleanWords = String(words || "").trim();
+      if (level.title === "🎉 Say Happy" && cleanWords.toLowerCase() === "happy") {
+        return "🎉 Happy Birthday!";
+      }
+      if (level.title === "💌 Sign Card" && cleanWords.toLowerCase() === "from me") {
+        return "📮 From me";
+      }
+      if (level.template && level.template.includes("___")) {
+        return level.template.replace("___", cleanWords);
+      }
+      return level.template || cleanWords || "";
+    }
+
+    function renderCard() {
+      const placeholders = {
+        greeting: "Happy Birthday!",
+        name: "Dear...",
+        compliment: "You are...",
+        wish: "I hope...",
+        sign: "Love..."
+      };
+
+      Object.keys(cardLines).forEach(key => {
+        const line = cardLines[key];
+        const value = cardState[key];
+        line.textContent = value || placeholders[key];
+        line.classList.toggle("empty", !value);
+      });
+    }
+
+    function renderSendState() {
+      sendCardBtn.hidden = !cardComplete || cardSent;
+      sentBanner.classList.toggle("show", cardSent);
+      bonusStartBtn.hidden = !cardSent || bonusActive;
+      if (!cardSent) {
+        cardFront.classList.remove("sent");
+      }
+    }
+
+    function sendCard() {
+      if (!cardComplete || cardSent) return;
+      cardSent = true;
+      sendCardBtn.hidden = true;
+      cardFront.classList.remove("sent");
+      void cardFront.offsetWidth;
+      cardFront.classList.add("sent");
+      message.textContent = "There it goes, sweetheart. You sent your card.";
+      window.setTimeout(() => {
+        sentBanner.classList.add("show");
+        bonusStartBtn.hidden = false;
+        storyText.textContent = "Your birthday card was sent with sparkles.";
+      }, 720);
+    }
+
+    function startBonusParty() {
+      bonusActive = true;
+      bonusIndex = 0;
+      bonusComplete = false;
+      cardFront.classList.remove("sent");
+      partyRoom.classList.add("show");
+      bonusStartBtn.hidden = true;
+      sentBanner.classList.add("show");
+      storyText.textContent = "Now let us build a birthday party room together.";
+      render();
+    }
+
+    function renderPartyState() {
+      partyRoom.classList.toggle("show", bonusActive || cardSent);
+      fireworksLayer.classList.toggle("show", bonusComplete);
+    }
+
+    function launchFireworks() {
+      fireworksLayer.innerHTML = "";
+      const palette = ["#ff5aa8", "#ffd43b", "#2dd4bf", "#7c4dff", "#ff8a3d", "#ffffff"];
+      const burstPoints = [
+        { x: "24%", y: "18%" },
+        { x: "50%", y: "10%" },
+        { x: "78%", y: "20%" },
+        { x: "36%", y: "32%" },
+        { x: "66%", y: "34%" }
+      ];
+
+      burstPoints.forEach((point, index) => {
+        const colors = [palette[index % palette.length], palette[(index + 1) % palette.length], palette[(index + 2) % palette.length]];
+        colors.forEach((color, colorIndex) => {
+          const firework = document.createElement("span");
+          firework.className = "firework" + (colorIndex === 0 ? "" : " spark");
+          firework.style.setProperty("--x", point.x);
+          firework.style.setProperty("--y", point.y);
+          firework.style.setProperty("--c", color);
+          firework.style.setProperty("--r", `${colorIndex * 60}deg`);
+          firework.style.animationDelay = `${index * 0.12 + colorIndex * 0.04}s`;
+          fireworksLayer.appendChild(firework);
+        });
+      });
+
+      fireworksLayer.classList.add("show");
+      window.clearTimeout(launchFireworks.hideTimer);
+      launchFireworks.hideTimer = window.setTimeout(() => {
+        fireworksLayer.classList.remove("show");
+        fireworksLayer.innerHTML = "";
+      }, 1600);
+    }
+
+    function unlockPartyItem(item) {
+      if (partyItems[item]) {
+        partyItems[item].classList.add("unlocked");
+      }
+    }
+
+    function moveAvatar() {
+      const activeIndex = bonusActive ? bonusIndex : levelIndex;
+      const stop = avatarStops[Math.min(activeIndex, avatarStops.length - 1)];
+      avatar.style.left = stop.left;
+      avatar.style.bottom = stop.bottom;
+      avatar.style.transform = "translateY(-8px)";
+      window.setTimeout(() => {
+        avatar.style.transform = "";
+      }, 190);
+    }
+
+    function unlockReward() {}
+
+    function normalize(text) {
+      return text.trim().toLowerCase();
+    }
+
+    function buildWordProgress(current, piece, answer) {
+      const cleanCurrent = normalize(current);
+      const cleanPiece = normalize(piece);
+      const cleanAnswer = normalize(answer);
+      const direct = cleanCurrent + cleanPiece;
+
+      if (cleanAnswer.startsWith(direct)) {
+        return direct;
+      }
+
+      const nextPieceIndex = cleanAnswer.indexOf(cleanPiece, cleanCurrent.length);
+      if (nextPieceIndex >= cleanCurrent.length) {
+        return cleanAnswer.slice(0, nextPieceIndex + cleanPiece.length);
+      }
+
+      return direct;
+    }
+
+    function nextChallenge() {
+      if (bonusActive) {
+        bonusIndex = (bonusIndex + 1) % bonusChallenges.length;
+      } else {
+        levelIndex = (levelIndex + 1) % levels.length;
+      }
+      render();
+      writingInput.focus();
+    }
+
+    function speakPrompt() {
+      const level = currentLevel();
+      if (!("speechSynthesis" in window)) {
+        message.textContent = "Mommy can read it with you out loud.";
+        return;
+      }
+
+      speechSynthesis.cancel();
+      const words = new SpeechSynthesisUtterance("Okay sweetheart. " + level.prompt);
+      const warmVoice = chooseWarmVoice();
+      if (warmVoice) {
+        words.voice = warmVoice;
+      }
+      words.rate = .78;
+      words.pitch = 1.16;
+      words.volume = 1;
+      speechSynthesis.speak(words);
+    }
+
+    function chooseWarmVoice() {
+      const voices = speechSynthesis.getVoices();
+      const warmNames = ["Samantha", "Karen", "Moira", "Tessa", "Serena", "Sandy", "Shelley", "Jenny", "Aria", "Zira"];
+      return voices.find(voice => warmNames.some(name => voice.name.includes(name)) && voice.lang.startsWith("en"))
+        || voices.find(voice => voice.lang === "en-US" && /female|woman|girl|samantha|jenny|aria|zira|sandy|shelley/i.test(voice.name))
+        || voices.find(voice => voice.lang.startsWith("en") && /female|woman|girl/i.test(voice.name))
+        || voices.find(voice => voice.lang === "en-US")
+        || voices.find(voice => voice.lang.startsWith("en"))
+        || voices[0];
+    }
+
+    jumpBtn.addEventListener("click", attemptJump);
+    sendCardBtn.addEventListener("click", sendCard);
+    sendCardBtn.onclick = sendCard;
+    bonusStartBtn.addEventListener("click", startBonusParty);
+    nextBtn.addEventListener("click", nextChallenge);
+    speakBtn.addEventListener("click", speakPrompt);
+    writingInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        attemptJump();
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>
